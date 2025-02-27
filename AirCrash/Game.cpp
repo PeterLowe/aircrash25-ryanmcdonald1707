@@ -109,6 +109,8 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_window.close();
 	}
+	movePlanes();
+
 }
 
 /// <summary>
@@ -119,6 +121,7 @@ void Game::render()
 	m_window.clear(sf::Color::White);
 	m_window.draw(m_skySprite);
 	m_window.draw(m_bigPlaneSprite);
+	m_window.draw(m_smallPlaneSprite);
 	m_window.display();
 }
 
@@ -157,6 +160,8 @@ void Game::setupSky()
 void Game::setupPlanes()
 {
 	sf::IntRect bigRectangle{ 3,11,104,93 };
+	sf::IntRect smallRectangle{ 362,115,87,69 };
+
 	if (!m_planesTexture.loadFromFile("ASSETS\\IMAGES\\planes.png"))
 	{
 		std::cout << "Problem loading PLANES" << std::endl;
@@ -167,4 +172,20 @@ void Game::setupPlanes()
 	m_bigPlaneSprite.setOrigin(bigRectangle.width / 2.0f, bigRectangle.height / 2.0f);
 	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
 	m_bigPlaneSprite.setRotation(m_bigHeading);
+
+	m_smallPlaneSprite.setTexture(m_planesTexture);
+	m_smallPlaneSprite.setTextureRect(smallRectangle);
+	m_smallPlaneSprite.setOrigin(smallRectangle.width / 2.0f, smallRectangle.height / 2.0f);
+	m_smallPlaneSprite.setPosition(m_smallPlaneLocation);
+	m_smallPlaneSprite.setRotation(m_smallHeading);
+}
+
+void Game::movePlanes()
+{
+	m_bigPlaneLocation += m_bigPlaneVelocity;
+	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
+
+	m_smallPlaneLocation += m_smallPlaneVelocity;
+	m_smallPlaneSprite.setPosition(m_smallPlaneLocation);
+
 }

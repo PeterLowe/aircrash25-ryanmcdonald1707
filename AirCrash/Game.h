@@ -40,6 +40,9 @@ private:
 	void setupSky();
 	void setupPlanes();
 
+	void movePlanes();
+
+
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
 
@@ -47,11 +50,17 @@ private:
 	sf::Sprite m_skySprite; //sprite for sky
 
 	sf::Texture m_planesTexture;
+
+	//BIGPLANE
 	sf::Sprite m_bigPlaneSprite;
 	sf::Vector2f m_bigPlaneVelocity{1.0f,-1.0f};
 	sf::Vector2f m_bigPlaneLocation{ 200.0f,200.0f };
-
 	float m_bigHeading{ 45.0f };
+
+	//SMALLPLANE
+	sf::Sprite m_smallPlaneSprite;
+	sf::Vector2f m_smallPlaneVelocity{ -1.6f,1.6f };
+	sf::Vector2f m_smallPlaneLocation{ 600.0f,0.0f };
 	float m_smallHeading{ 225.0f };
 
 	bool m_exitGame; // control exiting game
