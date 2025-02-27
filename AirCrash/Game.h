@@ -38,12 +38,21 @@ private:
 	void setupFontAndText();
 	void setupSprite();
 	void setupSky();
+	void setupPlanes();
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
 
-	sf::Texture m_skyTexture;
-	sf::Sprite m_skySprite;
+	sf::Texture m_skyTexture; //texture for sky
+	sf::Sprite m_skySprite; //sprite for sky
+
+	sf::Texture m_planesTexture;
+	sf::Sprite m_bigPlaneSprite;
+	sf::Vector2f m_bigPlaneVelocity{1.0f,-1.0f};
+	sf::Vector2f m_bigPlaneLocation{ 200.0f,200.0f };
+
+	float m_bigHeading{ 45.0f };
+	float m_smallHeading{ 225.0f };
 
 	bool m_exitGame; // control exiting game
 
