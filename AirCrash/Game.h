@@ -9,7 +9,11 @@
 /// same as #pragma once
 /// Don't forget the endif at the bottom
 /// </summary>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp> 
+#include <SFML/Audio.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Event.hpp>
 
 class Game
 {
