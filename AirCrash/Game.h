@@ -18,6 +18,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+float vectorLength(sf::Vector2f t_v);
+
 const int HEIGHT = 800;
 const int WIDTH = 1000;
 
@@ -49,6 +51,9 @@ private:
 	void movePlanes();
 	void keepOnScreen(sf::Vector2f &t_location);
 	void drawPlane(sf::Sprite &t_plane);
+	bool checkCollisionsBB(sf::Sprite &t_plane1, sf::Sprite &t_plane2);
+	bool checkCollisionsDistance(sf::Vector2f t_pos1, float t_rad1, 
+						sf::Vector2f t_pos2, float t_rad2);
 
 
 	sf::RenderWindow m_window; // main SFML window
@@ -64,12 +69,14 @@ private:
 	sf::Vector2f m_bigPlaneVelocity{1.0f,-1.0f};
 	sf::Vector2f m_bigPlaneLocation{ 200.0f,200.0f };
 	float m_bigHeading{ 45.0f };
+	float m_bigRadius;
 
 	//SMALLPLANE
 	sf::Sprite m_smallPlaneSprite;
 	sf::Vector2f m_smallPlaneVelocity{ -1.6f,1.6f };
 	sf::Vector2f m_smallPlaneLocation{ 600.0f,0.0f };
 	float m_smallHeading{ 225.0f };
+	float m_smallRadius;
 
 	sf::Vector2f m_mouseDown;
 

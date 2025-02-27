@@ -31,6 +31,11 @@ Game::~Game()
 }
 
 
+float vectorLength(sf::Vector2f t_v)
+{
+	return std::sqrtf(t_v.x * t_v.x + t_v.y * t_v.y);
+}
+
 /// <summary>
 /// main game loop
 /// update 60 times per second,
@@ -124,6 +129,15 @@ void Game::update(sf::Time t_deltaTime)
 	movePlanes();
 	keepOnScreen(m_smallPlaneLocation);
 	keepOnScreen(m_bigPlaneLocation);
+
+	if (checkCollisionsDistance(m_bigPlaneLocation, m_bigRadius, 
+									m_smallPlaneLocation, m_smallRadius))
+	{
+		m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+		m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+
+	}
+
 }
 
 /// <summary>
@@ -229,12 +243,22 @@ void Game::setupPlanes()
 	m_bigPlaneSprite.setOrigin(bigRectangle.width / 2.0f, bigRectangle.height / 2.0f);
 	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
 	m_bigPlaneSprite.setRotation(m_bigHeading);
+	if (m_bigPlaneSprite.getLocalBounds().height > m_bigPlaneSprite.getLocalBounds().width)
+	{
+		m_bigRadius = m_bigPlaneSprite.getLocalBounds().height / 2.0f;
+	}
+	else
+	{
+		m_bigRadius = m_bigPlaneSprite.getLocalBounds().width / 2.0f;
+	}
 
 	m_smallPlaneSprite.setTexture(m_planesTexture);
 	m_smallPlaneSprite.setTextureRect(smallRectangle);
 	m_smallPlaneSprite.setOrigin(smallRectangle.width / 2.0f, smallRectangle.height / 2.0f);
 	m_smallPlaneSprite.setPosition(m_smallPlaneLocation);
 	m_smallPlaneSprite.setRotation(m_smallHeading);
+	m_smallRadius = smallRectangle.width / 2.0f;
+
 }
 
 void Game::movePlanes()
@@ -322,4 +346,32 @@ void Game::drawPlane(sf::Sprite& t_plane)
 	m_window.draw(globalBounds);
 	m_window.draw(localBounds);
 	m_window.draw(ring);
+}
+
+bool Game::checkCollisionsBB(sf::Sprite& t_plane1, sf::Sprite& t_plane2)
+{
+	if (t_plane1.getGlobalBounds().intersects(t_plane2.getGlobalBounds()))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Game::checkCollisionsDistance(sf::Vector2f t_pos1, float t_rad1, sf::Vector2f t_pos2, float t_rad2)
+{
+	sf::Vector2f displacement;
+	float distance;
+	float minimumSafeDistance;
+
+	minimumSafeDistance = t_rad1 + t_rad2;
+
+	displacement = t_pos1 - t_pos2;
+	distance = vectorLength(displacement);
+	if (distance < minimumSafeDistance)
+	{
+		return true;
+	}
+
+	return false;
 }
