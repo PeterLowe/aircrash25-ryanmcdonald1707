@@ -47,6 +47,8 @@ private:
 	void setupSprite();
 	void setupSky();
 	void setupPlanes();
+	void setupExplosion();
+	void animateExplosion();
 
 	void movePlanes();
 	void keepOnScreen(sf::Vector2f &t_location);
@@ -79,6 +81,14 @@ private:
 	float m_smallRadius;
 
 	sf::Vector2f m_mouseDown;
+
+	sf::Texture m_explosionTexture;
+	sf::Sprite m_explosionSprite;
+	bool m_exploding{ false };
+	int m_expFrame{ 0 };
+	float m_expIncrement{ 0.6f };
+	float m_expFrameTimer{ 0.0f };
+
 
 	bool m_exitGame; // control exiting game
 	bool m_debugging;

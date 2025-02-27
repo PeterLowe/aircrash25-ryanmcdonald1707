@@ -130,12 +130,14 @@ void Game::update(sf::Time t_deltaTime)
 	keepOnScreen(m_smallPlaneLocation);
 	keepOnScreen(m_bigPlaneLocation);
 
-	if (checkCollisionsDistance(m_bigPlaneLocation, m_bigRadius, 
-									m_smallPlaneLocation, m_smallRadius))
+	if (!m_exploding)
 	{
-		m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-		m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-
+		m_exploding = checkCollisionsDistance(m_bigPlaneLocation, m_bigRadius,
+			m_smallPlaneLocation, m_smallRadius);
+	}
+	if (m_exploding)
+	{
+		animateExplosion();
 	}
 
 }
@@ -149,6 +151,10 @@ void Game::render()
 	m_window.draw(m_skySprite);
 	m_window.draw(m_bigPlaneSprite);
 	m_window.draw(m_smallPlaneSprite);
+	if (m_exploding)
+	{
+		m_window.draw(m_explosionSprite);
+	}
 	if (m_debugging)
 	{
 		drawPlane(m_bigPlaneSprite);
@@ -214,6 +220,7 @@ void Game::setupSprite()
 {
 	setupSky();
 	setupPlanes();
+	setupExplosion();
 }
 
 void Game::setupSky()
@@ -258,6 +265,45 @@ void Game::setupPlanes()
 	m_smallPlaneSprite.setPosition(m_smallPlaneLocation);
 	m_smallPlaneSprite.setRotation(m_smallHeading);
 	m_smallRadius = smallRectangle.width / 2.0f;
+
+}
+
+void Game::setupExplosion()
+{
+	if (!m_explosionTexture.loadFromFile("ASSETS\\IMAGES\\explosion.png"))
+	{
+		std::cout << "PROBLEM WITH EXPLOSION" << std::endl;
+	}
+	m_explosionSprite.setTexture(m_explosionTexture);
+	m_explosionSprite.setTextureRect(sf::IntRect{ 0,0,100,100 });
+	m_explosionSprite.setPosition(400.0f, 400.0f);
+	m_explosionSprite.setOrigin(50.0f,50.0f);
+
+}
+
+void Game::animateExplosion()
+{
+	int frame;
+	const int ROWS = 6;
+	const int COLS = 8;
+	const int SIZE = 100;
+	int col;
+	int row;
+	m_expFrameTimer += m_expIncrement;
+	frame = static_cast<int>(m_expFrameTimer);
+	if (frame > 47)
+	{
+		m_expFrameTimer -= 48.0f;
+		frame = 0;
+		m_exploding = false;
+	}
+	if (frame != m_expFrame)
+	{
+
+		col = frame % COLS;
+		row = frame / ROWS;
+		m_explosionSprite.setTextureRect(sf::IntRect(col * SIZE, row * SIZE, SIZE, SIZE));
+	}
 
 }
 
@@ -370,6 +416,8 @@ bool Game::checkCollisionsDistance(sf::Vector2f t_pos1, float t_rad1, sf::Vector
 	distance = vectorLength(displacement);
 	if (distance < minimumSafeDistance)
 	{
+		m_exploding = true;
+		m_explosionSprite.setPosition((t_pos1 + t_pos2) / 2.0f);
 		return true;
 	}
 
