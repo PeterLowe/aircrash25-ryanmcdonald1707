@@ -101,6 +101,10 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	if (sf::Keyboard::F1 == t_event.key.code)
+	{
+		m_debugging = !m_debugging;
+	}
 }
 
 /// <summary>
@@ -131,6 +135,13 @@ void Game::render()
 	m_window.draw(m_skySprite);
 	m_window.draw(m_bigPlaneSprite);
 	m_window.draw(m_smallPlaneSprite);
+	if (m_debugging)
+	{
+		drawPlane(m_bigPlaneSprite);
+		drawPlane(m_smallPlaneSprite);
+
+	}
+
 	m_window.display();
 }
 
@@ -256,5 +267,15 @@ void Game::keepOnScreen(sf::Vector2f& t_location)
 	{
 		t_location.y = screenHeight;
 	}
+
+}
+
+void Game::drawPlane(sf::Sprite& t_plane)
+{
+	sf::CircleShape dot{ 4.0f };
+	dot.setFillColor(sf::Color::Yellow);
+	dot.setOrigin(4.0f, 4.0f);
+	dot.setPosition(t_plane.getPosition());
+	m_window.draw(dot);
 
 }

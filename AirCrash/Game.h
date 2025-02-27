@@ -48,6 +48,8 @@ private:
 
 	void movePlanes();
 	void keepOnScreen(sf::Vector2f &t_location);
+	void drawPlane(sf::Sprite &t_plane);
+
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
@@ -72,6 +74,7 @@ private:
 	sf::Vector2f m_mouseDown;
 
 	bool m_exitGame; // control exiting game
+	bool m_debugging;
 
 };
 
