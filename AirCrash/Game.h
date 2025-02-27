@@ -15,6 +15,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Event.hpp>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 const int HEIGHT = 800;
 const int WIDTH = 1000;
 
@@ -35,6 +38,9 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 	
+	void processMouseDown(sf::Event t_event);
+	void processMouseUp(sf::Event t_event);
+
 	void setupFontAndText();
 	void setupSprite();
 	void setupSky();
@@ -62,6 +68,8 @@ private:
 	sf::Vector2f m_smallPlaneVelocity{ -1.6f,1.6f };
 	sf::Vector2f m_smallPlaneLocation{ 600.0f,0.0f };
 	float m_smallHeading{ 225.0f };
+
+	sf::Vector2f m_mouseDown;
 
 	bool m_exitGame; // control exiting game
 
